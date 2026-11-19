@@ -128,7 +128,7 @@ function Steal.carryLoop(player)
 			Steal.dropCarried(player)
 			return
 		end
-		data.carrying.model:PivotTo(root.CFrame * CFrame.new(0, 4.5, 0))
+		data.carrying.model:PivotTo(root.CFrame * CFrame.new(0, 6.0, 0))
 		if World.distanceToBase(World.Bases.Player, root.Position) < 14 then
 			local carried = data.carrying
 			data.carrying = nil
@@ -190,20 +190,25 @@ end
 
 -- Two rival NPC bases with a few brainrots each and locks that cycle on and off,
 -- so there is always someone to steal from — and someone whose shield is up.
+-- Rivals sit on slots 1, 4 and 6 (spread across the base): on slots 1, 2, 3
+-- they stood 6 studs apart and their labels overlapped into one blob.
+-- rival.brainrots is keyed by SLOT number (that is what trySteal,
+-- returnBrainrot and attachRivalPrompt all look up), not by loop index.
 function Steal.setupRivals()
 	local defs = {
-		{ baseKey = "Rival1", name = "Sir Quacksalot", entries = { "discopickle", "bananaphone", "couchpotato" } },
-		{ baseKey = "Rival2", name = "Madame Zucchini", entries = { "grannyslipper", "quantumburrito", "tproll" } },
+		{ baseKey = "Rival1", name = "Sir Quacksalot", entries = { "discopickle", "bananaphone", "couchpotato" }, slots = { 1, 4, 6 } },
+		{ baseKey = "Rival2", name = "Madame Zucchini", entries = { "grannyslipper", "quantumburrito", "tproll" }, slots = { 1, 4, 6 } },
 	}
 	for _, def in ipairs(defs) do
 		local rival = { name = def.name, baseKey = def.baseKey, brainrots = {}, lockUntil = 0 }
 		for i, id in ipairs(def.entries) do
+			local slot = def.slots[i]
 			local entry = Catalog.byId(id)
 			local model = Factory.buildBrainrotModel(entry, false)
-			model:PivotTo(World.Bases[def.baseKey].slots[i])
+			model:PivotTo(World.Bases[def.baseKey].slots[slot])
 			model.Parent = Workspace.BrainrotBay
-			rival.brainrots[i] = { entry = entry, model = model, golden = false }
-			Steal.attachRivalPrompt(rival, i)
+			rival.brainrots[slot] = { entry = entry, model = model, golden = false }
+			Steal.attachRivalPrompt(rival, slot)
 		end
 		table.insert(State.Rivals, rival)
 	end
@@ -310,7 +315,7 @@ function Steal.spawnThief()
 			dropped = true
 		end
 	end)
-	Conveyor.moveModelTo(thief, CFrame.new(base.center + Vector3.new(0, 1, 0)), 6)
+	Conveyor.moveModelTo(thief, CFrame.new(base.center + Vector3.new(0, 2, 0)), 6)
 	if dropped then
 		remotes().ThiefAlert:FireAllClients("You tagged Sneaky Pete! He dropped nothing and ran off.")
 		thief:Destroy()
@@ -337,9 +342,9 @@ function Steal.spawnThief()
 	remotes().ThiefAlert:FireAllClients("Sneaky Pete stole " .. bestEntry.name .. "! TAG HIM to make him drop it!")
 	local carryUntil = os.time() + 25
 	while os.time() < carryUntil and not dropped do
-		-- Carried model floats above the thief's head: 4.5 clears the head
-		-- top for the 1.5x-scaled model (feet 1.8 below its pivot).
-		stolen.model:PivotTo(thief:GetPivot() * CFrame.new(0, 4.5, 0))
+		-- Carried model floats above the thief's head: 6.0 clears the head
+		-- top for the 2.0x-scaled model (feet 2.4 below its pivot).
+		stolen.model:PivotTo(thief:GetPivot() * CFrame.new(0, 6.0, 0))
 		thief:PivotTo(thief:GetPivot() * CFrame.new(-0.12, 0, -0.12))
 		RunService.Heartbeat:Wait()
 	end
@@ -348,7 +353,7 @@ function Steal.spawnThief()
 		remotes().ThiefAlert:FireAllClients("You tagged Sneaky Pete! " .. bestEntry.name .. " is safe.")
 	else
 		local rival = State.Rivals[1]
-		local slot = 4
+		local slot = 8 -- empty: rivals sit on slots 1, 4, 6
 		rival.brainrots[slot] = { entry = bestEntry, model = stolen.model, golden = false }
 		stolen.model:PivotTo(World.Bases[rival.baseKey].slots[slot])
 		Steal.attachRivalPrompt(rival, slot)

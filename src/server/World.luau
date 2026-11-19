@@ -99,8 +99,8 @@ local function buildBase(folder, key, displayName, center, color)
 			pad.Material = Enum.Material.Neon
 			pad.Transparency = 0.5
 			-- Slot target is the brainrot body centre: pad top (1.25) plus the
-			-- scaled body half-height (1.8), so the model stands ON the pad.
-			slots[(row - 1) * 4 + col] = CFrame.new(slotPos + Vector3.new(0, 1.95, 0))
+			-- scaled body half-height (2.4 at 2.0x), so the model stands ON the pad.
+			slots[(row - 1) * 4 + col] = CFrame.new(slotPos + Vector3.new(0, 2.55, 0))
 		end
 	end
 
@@ -126,10 +126,11 @@ function World.buildWorld()
 	folder.Parent = game:GetService("Workspace")
 
 	-- Ground: bright grass in the middle, sand at the south edge, blue bay north.
-	-- Grass top is y=0, two studs above the baseplate top (y=-2): the island
-	-- reads green instead of grey studs. It used to be coplanar with the
-	-- baseplate and lost the z-fight everywhere.
-	part(folder, "Grass", Vector3.new(140, 2, 140), Vector3.new(0, -1, 5), Color3.fromRGB(110, 220, 90), Enum.Material.Grass)
+	-- The grass slab spans the whole view (512 wide, top y=0) so the ground
+	-- reads green to the horizon, and the baseplate under it is the SAME
+	-- green: if the grass ever failed to cover, the fallback is still green,
+	-- never blue studs. (Rev 5 showed blue studs instead of grass.)
+	part(folder, "Grass", Vector3.new(512, 4, 512), Vector3.new(0, -2, 5), Color3.fromRGB(110, 220, 90), Enum.Material.Grass)
 	-- Sand sits 0.2 above the grass: the two slabs overlap in z, and at the
 	-- same height they z-fight too.
 	part(folder, "Sand", Vector3.new(140, 2, 20), Vector3.new(0, -0.8, 68), Color3.fromRGB(255, 230, 150), Enum.Material.Sand)

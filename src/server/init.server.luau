@@ -29,6 +29,11 @@ local Rebirth = require(script.Rebirth)
 
 -- The island must exist before any character spawns on it.
 World.buildWorld()
+-- Diagnostic: prove the island exists at runtime. (Rev 5 showed blue studs
+-- instead of green grass in Studio — this line settles whether Grass exists.)
+local bay = game:GetService("Workspace"):FindFirstChild("BrainrotBay")
+local grass = bay and bay:FindFirstChild("Grass")
+print("BrainrotBay parts:", bay and #bay:GetChildren() or 0, "| Grass:", grass and ("at " .. tostring(grass.Position) .. " size " .. tostring(grass.Size)) or "MISSING")
 Steal.setupRivals()
 
 local function onCharacterAdded(player, character)

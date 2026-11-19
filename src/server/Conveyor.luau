@@ -12,11 +12,13 @@ local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
 
 Conveyor.Belt = {} -- list of { entry, model, speed, golden }
-Conveyor.SPAWN_INTERVAL = 4
-Conveyor.MAX_ON_BELT = 8
--- Body centre height: belt top (1.1) plus the scaled body half-height (1.8),
--- so the scaled models stand ON the belt instead of sinking into it.
-Conveyor.BELT_Y = 2.9
+-- One spawn every 5s at 4 studs/s = 20 studs apart, max 6 on the belt:
+-- at 4s/8 the models bunched up and their labels overlapped into one row.
+Conveyor.SPAWN_INTERVAL = 5
+Conveyor.MAX_ON_BELT = 6
+-- Body centre height: belt top (1.1) plus the scaled body half-height (2.4
+-- at 2.0x), so the scaled models stand ON the belt instead of sinking into it.
+Conveyor.BELT_Y = 3.5
 Conveyor.START_X = -54
 Conveyor.END_X = 54
 Conveyor.SPEED = 4
