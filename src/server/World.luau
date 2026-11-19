@@ -90,7 +90,7 @@ local function buildBase(folder, key, displayName, center, color)
 	local slots = {}
 	for row = 1, 2 do
 		for col = 1, 4 do
-			local slotPos = center + Vector3.new(-7.5 + (col - 1) * 5, 1.1, -4 + (row - 1) * 8)
+			local slotPos = center + Vector3.new(-9 + (col - 1) * 6, 1.1, -4.5 + (row - 1) * 9)
 			local pad = part(baseFolder, "SlotPad" .. ((row - 1) * 4 + col), Vector3.new(4, 0.3, 4), slotPos, Color3.fromRGB(255, 255, 255))
 			pad.Material = Enum.Material.Neon
 			pad.Transparency = 0.5

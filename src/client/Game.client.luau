@@ -59,8 +59,10 @@ local tierHeader = makeLabel(tierPanel, "Header", UDim2.new(0, 12, 0, 6), UDim2.
 tierHeader.Text = "NEXT TIER"
 local tierName = makeLabel(tierPanel, "Name", UDim2.new(0, 12, 0, 30), UDim2.new(1, -24, 0, 26), 20, Color3.fromRGB(255, 255, 255))
 tierName.Text = "Soggy Sockfish"
+tierName.TextScaled = true
 local tierCost = makeLabel(tierPanel, "Cost", UDim2.new(0, 12, 0, 58), UDim2.new(1, -24, 0, 26), 18, Color3.fromRGB(255, 190, 40))
 tierCost.Text = "$25  •  $1/s"
+tierCost.TextScaled = true
 
 -- Buttons, bottom-right: lock, rebirth and the three upgrades.
 local function makeButton(name, text, y)

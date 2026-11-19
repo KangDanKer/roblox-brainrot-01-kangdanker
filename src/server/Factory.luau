@@ -102,7 +102,7 @@ function Factory.buildBrainrotModel(entry, golden)
 	-- Readable label: name on top, rarity and $/s underneath, in rarity colour.
 	local billboard = Instance.new("BillboardGui")
 	billboard.Name = "Label"
-	billboard.Size = UDim2.new(0, 220, 0, 64)
+	billboard.Size = UDim2.new(0, 170, 0, 54)
 	billboard.StudsOffsetWorldSpace = Vector3.new(0, 4.6, 0)
 	billboard.AlwaysOnTop = true
 	billboard.Parent = model
@@ -113,7 +113,7 @@ function Factory.buildBrainrotModel(entry, golden)
 	nameLabel.BackgroundTransparency = 0.25
 	nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	nameLabel.Text = displayName
-	nameLabel.TextSize = 20
+	nameLabel.TextSize = 16
 	nameLabel.Font = Enum.Font.GothamBold
 	nameLabel.TextScaled = false
 	nameLabel.Parent = billboard
@@ -125,7 +125,7 @@ function Factory.buildBrainrotModel(entry, golden)
 	subLabel.BackgroundTransparency = 0.25
 	subLabel.TextColor3 = Catalog.RARITY_COLORS[entry.rarity]
 	subLabel.Text = entry.rarity .. "  •  $" .. income .. "/s"
-	subLabel.TextSize = 17
+	subLabel.TextSize = 14
 	subLabel.Font = Enum.Font.GothamBold
 	subLabel.Parent = billboard
 
