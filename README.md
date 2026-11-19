@@ -1,21 +1,45 @@
-# roblox-brainrot-01 starter
+# Brainrot Bay — make.fun roblox-brainrot-01
 
-A working entry for make.fun's "Make the best AI Roblox brainrot game" bounty (roblox-brainrot-01), laid out as your
-repository: a Rojo project whose game is a grey square that moves with the arrow keys. It is a starting point, not a
-winner, and not yet the 3D game the bounty asks for: its square is drawn on the screen, not in Roblox's 3D world.
+[![roblox-brainrot-01](https://make.fun/badge/roblox-brainrot-01.svg)](https://make.fun/bounty/roblox-brainrot-01)
+[![rank](https://make.fun/badge/roblox-brainrot-01/KangDanKer/roblox-brainrot-01-kangdanker/rank.svg)](https://make.fun/bounty/roblox-brainrot-01)
+[![reward](https://make.fun/badge/roblox-brainrot-01/KangDanKer/roblox-brainrot-01-kangdanker/reward.svg)](https://make.fun/bounty/roblox-brainrot-01)
 
-- `main.ts` (Node 22, standard library only) hands the game in: it copies `game.rbxl`, `src/`, `screenshots/` and
-  `PLAY.json` to `/output`, leaving out every name that starts with a dot (such as `.gitkeep` or `.DS_Store`, which
-  fail an entry), and writes `/output/dossier.json` with `vendor/makefun-roblox.ts`, the kit's copy, unchanged.
-- `game.rbxl` is the place Rojo builds from `src/` and `default.project.json`; `screenshots/` holds three captures of
-  it; `PLAY.json` names no place yet, so the gate refuses the starter as it stands until it names your published one.
-- One of your screenshots must also be your game's first thumbnail on Roblox: the same picture, uploaded on the
-  Creator Dashboard with your game's icon.
-- `TOUR.json` is an example of the optional tour: for each screenshot, the keys that bring the game to that screen.
+A 3D Roblox brainrot game for the [roblox-brainrot-01 bounty](https://make.fun/bounty/roblox-brainrot-01): collect absurd meme characters that earn money every second, keep them on your base, climb a ladder of rarities — and survive the tsunami while rivals try to steal your best brainrots.
 
-Run it as the grader does, writing `out/` in place of `/output`:
+**Play it:** https://www.roblox.com/games/97507246605446/Brainrot-Bay
 
-    mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+## How it plays
 
-The rules are on the bounty's page (/bounty/roblox-brainrot-01) and in the kit's RULES.txt,
-which gives every command in order (Before you submit, then Enter).
+- **Buy:** brainrots walk the belt across the island. Walk up, buy one, and it walks home to your base and starts earning $/s.
+- **Climb:** 12 original characters on six rarities — Common to Brainrot God — from Soggy Sockfish ($1/s) to Sir Reginald von Quackington III ($1,500/s). The HUD always shows your next tier.
+- **Steal:** grab brainrots off rival bases and carry them home in 30 seconds — unless their lock shield is up. Lock your own base for 60 seconds. Watch out for Sneaky Pete, the NPC thief.
+- **Survive:** a tsunami sweeps the map every couple of minutes. Inside your base you are safe; caught outside, the wave flings you and drops what you carry.
+- **Progress:** rebirths multiply all income forever and add base slots; upgrades buy slots, +10% income and walk speed. Golden brainrots (3x income) and double-money events appear on the belt.
+
+## Build
+
+Rojo-first: the scripts live under `src/` and Rojo builds the place.
+
+```sh
+~/workspace/.local/bin/rojo build default.project.json --output game.rbxl
+```
+
+Then run the game in Roblox Studio, capture the three screenshots into `screenshots/` (the first by name is the cover and the thumbnail), and hand the entry in with:
+
+```sh
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+```
+
+## Layout
+
+- `src/server/State.luau` — the single source of truth (players, rivals, tsunami, events)
+- `src/server/Catalog.luau` — the 12-character cast and the rarity ladder
+- `src/server/Factory.luau` — builds each brainrot's 3D model and its name/rarity/$-per-sec label
+- `src/server/World.luau` — builds the island: grass, sand, bay, belt, four bases, palms
+- `src/server/Conveyor.luau` — the belt: spawns, walks and sells brainrots
+- `src/server/Economy.luau` — buying, selling, the one-second income tick, next tier
+- `src/server/Steal.luau` — stealing, base locks, rival bases, Sneaky Pete
+- `src/server/Tsunami.luau` — the warning and the wave
+- `src/server/Rebirth.luau` — rebirths and upgrades
+- `src/server/CoverSetup.luau` — stages the cover frame for the thumbnail shot
+- `src/client/Game.client.luau` — the HUD: cash, income, next tier, buttons, banners

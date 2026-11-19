@@ -1,10 +1,10 @@
 {
-  "name": "house-dodge",
+  "name": "brainrot-bay",
   "tree": {
     "$className": "DataModel",
     "Players": {
       "$properties": {
-        "CharacterAutoLoads": false
+        "CharacterAutoLoads": true
       }
     },
     "ServerScriptService": {
