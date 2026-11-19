@@ -75,8 +75,9 @@ local function addAccessory(model, entry)
 	end
 end
 
--- Builds the model standing on its origin (feet at y = 0). Golden variants are
--- the same entry with a gold body and triple income, for the belt's rare event.
+-- Builds the model scaled 1.5x around its pivot (the body centre): feet sit
+-- 1.8 below the pivot, head top 3.9 above it. Golden variants are the same
+-- entry with a gold body and triple income, for the belt's rare event.
 function Factory.buildBrainrotModel(entry, golden)
 	local model = Instance.new("Model")
 	model.Name = entry.name
@@ -101,11 +102,17 @@ function Factory.buildBrainrotModel(entry, golden)
 	makePart(model, "PupilR", Vector3.new(0.25, 0.25, 0.25), Vector3.new(0.55, 3.1, 1.32), Color3.fromRGB(20, 20, 20), Enum.PartType.Ball)
 	addAccessory(model, entry)
 
+	-- Scale the whole model 1.5x around its pivot (the body centre): at the
+	-- old size the bodies were 3 studs wide and unreadable from the spawn
+	-- camera 54 studs away — only the labels showed. Scaled, the body is
+	-- 4.5 wide, feet sit 1.8 below the pivot, head top 3.9 above it.
+	model:ScaleTo(1.5)
+
 	-- Readable label: name on top, rarity and $/s underneath, in rarity colour.
 	local billboard = Instance.new("BillboardGui")
 	billboard.Name = "Label"
-	billboard.Size = UDim2.new(0, 170, 0, 54)
-	billboard.StudsOffsetWorldSpace = Vector3.new(0, 4.6, 0)
+	billboard.Size = UDim2.new(0, 200, 0, 64)
+	billboard.StudsOffsetWorldSpace = Vector3.new(0, 6.0, 0)
 	billboard.AlwaysOnTop = true
 	billboard.Parent = model
 	local nameLabel = Instance.new("TextLabel")
@@ -115,7 +122,7 @@ function Factory.buildBrainrotModel(entry, golden)
 	nameLabel.BackgroundTransparency = 0.25
 	nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	nameLabel.Text = displayName
-	nameLabel.TextSize = 16
+	nameLabel.TextSize = 18
 	nameLabel.Font = Enum.Font.GothamBold
 	nameLabel.TextScaled = false
 	nameLabel.Parent = billboard
@@ -127,7 +134,7 @@ function Factory.buildBrainrotModel(entry, golden)
 	subLabel.BackgroundTransparency = 0.25
 	subLabel.TextColor3 = Catalog.RARITY_COLORS[entry.rarity]
 	subLabel.Text = entry.rarity .. "  •  $" .. income .. "/s"
-	subLabel.TextSize = 14
+	subLabel.TextSize = 16
 	subLabel.Font = Enum.Font.GothamBold
 	subLabel.Parent = billboard
 

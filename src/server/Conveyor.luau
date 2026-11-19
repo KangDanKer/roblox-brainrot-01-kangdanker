@@ -14,7 +14,9 @@ local Workspace = game:GetService("Workspace")
 Conveyor.Belt = {} -- list of { entry, model, speed, golden }
 Conveyor.SPAWN_INTERVAL = 4
 Conveyor.MAX_ON_BELT = 8
-Conveyor.BELT_Y = 2.2
+-- Body centre height: belt top (1.1) plus the scaled body half-height (1.8),
+-- so the scaled models stand ON the belt instead of sinking into it.
+Conveyor.BELT_Y = 2.9
 Conveyor.START_X = -54
 Conveyor.END_X = 54
 Conveyor.SPEED = 4

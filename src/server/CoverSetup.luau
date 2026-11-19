@@ -33,10 +33,10 @@ function CoverSetup.setupCoverScene(player)
 	-- A golden brainrot mid-belt so the shot shows the catch waiting.
 	local goldenEntry = Catalog.byId("spaghetti")
 	local Factory = require(script.Parent.Factory)
-	local golden = Factory.buildBrainrotModel(goldenEntry, true)
-	golden:PivotTo(CFrame.new(0, 2.2, 0))
-	golden.Parent = game:GetService("Workspace").BrainrotBay
 	local Conveyor = require(script.Parent.Conveyor)
+	local golden = Factory.buildBrainrotModel(goldenEntry, true)
+	golden:PivotTo(CFrame.new(0, Conveyor.BELT_Y, 0))
+	golden.Parent = game:GetService("Workspace").BrainrotBay
 	table.insert(Conveyor.Belt, { entry = goldenEntry, model = golden, speed = 0, golden = true })
 	-- The threat on the horizon: warning banner plus the wave itself.
 	task.spawn(function()

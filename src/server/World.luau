@@ -51,7 +51,10 @@ local function signOn(parent, text, color, size, offset)
 	billboard.Name = "Sign"
 	billboard.Size = UDim2.new(0, size, 0, size * 0.45)
 	billboard.StudsOffsetWorldSpace = offset or Vector3.new(0, 5, 0)
-	billboard.AlwaysOnTop = true
+	-- NOT AlwaysOnTop: a giant sign that renders through everything hides the
+	-- brainrots on the belt behind it. Depth occlusion keeps the signs readable
+	-- (they sit high on their posts) without covering the game.
+	billboard.AlwaysOnTop = false
 	billboard.Parent = parent
 	local label = Instance.new("TextLabel")
 	label.Size = UDim2.new(1, 0, 1, 0)
@@ -95,12 +98,14 @@ local function buildBase(folder, key, displayName, center, color)
 			local pad = part(baseFolder, "SlotPad" .. ((row - 1) * 4 + col), Vector3.new(4, 0.3, 4), slotPos, Color3.fromRGB(255, 255, 255))
 			pad.Material = Enum.Material.Neon
 			pad.Transparency = 0.5
-			slots[(row - 1) * 4 + col] = CFrame.new(slotPos + Vector3.new(0, 1.4, 0))
+			-- Slot target is the brainrot body centre: pad top (1.25) plus the
+			-- scaled body half-height (1.8), so the model stands ON the pad.
+			slots[(row - 1) * 4 + col] = CFrame.new(slotPos + Vector3.new(0, 1.95, 0))
 		end
 	end
 
 	local signPost = part(baseFolder, "SignPost", Vector3.new(1, 7, 1), center + Vector3.new(0, 3.5, -11), Color3.fromRGB(90, 60, 30))
-	signOn(signPost, displayName, Color3.fromRGB(255, 255, 255), 220, Vector3.new(0, 4.5, 0))
+	signOn(signPost, displayName, Color3.fromRGB(255, 255, 255), 180, Vector3.new(0, 5.5, 0))
 
 	local lockField = part(baseFolder, "LockField", Vector3.new(25, 9, 25), center + Vector3.new(0, 4.5, 0), Color3.fromRGB(90, 240, 255), Enum.Material.ForceField, 1)
 	lockField.CanCollide = false
@@ -121,22 +126,29 @@ function World.buildWorld()
 	folder.Parent = game:GetService("Workspace")
 
 	-- Ground: bright grass in the middle, sand at the south edge, blue bay north.
+	-- Grass top is y=0, two studs above the baseplate top (y=-2): the island
+	-- reads green instead of grey studs. It used to be coplanar with the
+	-- baseplate and lost the z-fight everywhere.
 	part(folder, "Grass", Vector3.new(140, 2, 140), Vector3.new(0, -1, 5), Color3.fromRGB(110, 220, 90), Enum.Material.Grass)
-	part(folder, "Sand", Vector3.new(140, 2, 20), Vector3.new(0, -1, 68), Color3.fromRGB(255, 230, 150), Enum.Material.Sand)
-	local water = part(folder, "BayWater", Vector3.new(140, 1, 36), Vector3.new(0, -0.4, -48), Color3.fromRGB(40, 140, 255), Enum.Material.Glass, 0.35)
+	-- Sand sits 0.2 above the grass: the two slabs overlap in z, and at the
+	-- same height they z-fight too.
+	part(folder, "Sand", Vector3.new(140, 2, 20), Vector3.new(0, -0.8, 68), Color3.fromRGB(255, 230, 150), Enum.Material.Sand)
+	local water = part(folder, "BayWater", Vector3.new(140, 1, 36), Vector3.new(0, -0.4, -48), Color3.fromRGB(30, 120, 255), Enum.Material.Glass, 0.15)
 	water.CanCollide = false
 	part(folder, "BayFloor", Vector3.new(140, 1, 36), Vector3.new(0, -1.2, -48), Color3.fromRGB(20, 90, 180), Enum.Material.Sand)
 
 	-- The brainrot belt: a raised walkway across the middle, spawn gate west.
-	local belt = part(folder, "Belt", Vector3.new(112, 1, 8), Vector3.new(0, 0.5, 0), Color3.fromRGB(60, 60, 75))
+	-- Belt top is y=1.1 (bottom 0.1, clear of the grass): bright blue so the
+	-- walkway reads against the green island. Rails sit ON the belt top.
+	local belt = part(folder, "Belt", Vector3.new(112, 1, 8), Vector3.new(0, 0.6, 0), Color3.fromRGB(70, 130, 220))
 	belt.Material = Enum.Material.Metal
-	part(folder, "BeltRailN", Vector3.new(112, 1.2, 1), Vector3.new(0, 1.1, -4.5), Color3.fromRGB(255, 190, 40))
-	part(folder, "BeltRailS", Vector3.new(112, 1.2, 1), Vector3.new(0, 1.1, 4.5), Color3.fromRGB(255, 190, 40))
+	part(folder, "BeltRailN", Vector3.new(112, 1.2, 1), Vector3.new(0, 1.7, -4.5), Color3.fromRGB(255, 200, 40))
+	part(folder, "BeltRailS", Vector3.new(112, 1.2, 1), Vector3.new(0, 1.7, 4.5), Color3.fromRGB(255, 200, 40))
 	for i = 1, 10 do
-		part(folder, "BeltStripe" .. i, Vector3.new(2, 0.2, 6), Vector3.new(-50 + (i - 1) * 11, 1.1, 0), Color3.fromRGB(255, 220, 90), Enum.Material.Neon, 0.2)
+		part(folder, "BeltStripe" .. i, Vector3.new(2, 0.2, 6), Vector3.new(-50 + (i - 1) * 11, 1.2, 0), Color3.fromRGB(255, 220, 90), Enum.Material.Neon, 0.2)
 	end
 	local gatePost = part(folder, "BeltGate", Vector3.new(1, 9, 1), Vector3.new(-56, 4.5, -5), Color3.fromRGB(90, 60, 30))
-	signOn(gatePost, "BRAINROT BELT", Color3.fromRGB(255, 220, 90), 260, Vector3.new(0, 5.5, 0))
+	signOn(gatePost, "BRAINROT BELT", Color3.fromRGB(255, 220, 90), 200, Vector3.new(0, 5.5, 0))
 
 	-- Four base plots: player south-east, two rivals north, one open plot.
 	buildBase(folder, "Player", "YOUR BASE", Vector3.new(38, 0, 38), Color3.fromRGB(80, 200, 255))
@@ -156,7 +168,7 @@ function World.buildWorld()
 	local archL = part(folder, "ArchL", Vector3.new(1, 10, 1), Vector3.new(-5, 5, 50), Color3.fromRGB(255, 150, 200))
 	local archR = part(folder, "ArchR", Vector3.new(1, 10, 1), Vector3.new(5, 5, 50), Color3.fromRGB(255, 150, 200))
 	part(folder, "ArchTop", Vector3.new(11, 1, 1), Vector3.new(0, 10, 50), Color3.fromRGB(255, 150, 200))
-	signOn(archL, "BRAINROT BAY", Color3.fromRGB(255, 255, 255), 300, Vector3.new(5, 6, 0))
+	signOn(archL, "BRAINROT BAY", Color3.fromRGB(255, 255, 255), 220, Vector3.new(5, 6, 0))
 
 	-- Decoration: palms, clouds, rocks, flowers — dense and colourful.
 	for _, pos in ipairs({ { -60, 20 }, { 60, 20 }, { -60, -20 }, { 60, -20 }, { -20, 62 }, { 25, 62 } }) do

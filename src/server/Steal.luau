@@ -337,7 +337,9 @@ function Steal.spawnThief()
 	remotes().ThiefAlert:FireAllClients("Sneaky Pete stole " .. bestEntry.name .. "! TAG HIM to make him drop it!")
 	local carryUntil = os.time() + 25
 	while os.time() < carryUntil and not dropped do
-		stolen.model:PivotTo(thief:GetPivot() * CFrame.new(0, 3.5, 0))
+		-- Carried model floats above the thief's head: 4.5 clears the head
+		-- top for the 1.5x-scaled model (feet 1.8 below its pivot).
+		stolen.model:PivotTo(thief:GetPivot() * CFrame.new(0, 4.5, 0))
 		thief:PivotTo(thief:GetPivot() * CFrame.new(-0.12, 0, -0.12))
 		RunService.Heartbeat:Wait()
 	end
