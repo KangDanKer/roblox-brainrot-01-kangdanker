@@ -48,20 +48,21 @@ local function addAccessory(model, entry)
 		local cape = makePart(model, "Cape", Vector3.new(2.6, 2.6, 0.3), Vector3.new(0, 0.9, -1.3), Color3.fromRGB(220, 40, 40))
 		cape.CFrame = cape.CFrame * CFrame.Angles(math.rad(10), 0, 0)
 	elseif a == "burrito" then
-		local wrap = makePart(model, "Wrap", Vector3.new(2.2, 1.4, 2.2), Vector3.new(0, 2.2, 0), Color3.fromRGB(200, 160, 100), Enum.PartType.Cylinder)
+		local wrap = makePart(model, "Wrap", Vector3.new(2.2, 2.0, 2.0), Vector3.new(0, 2.2, 0), Color3.fromRGB(200, 160, 100), Enum.PartType.Cylinder)
 		wrap.CFrame = wrap.CFrame * CFrame.Angles(0, 0, math.rad(90))
 		makePart(model, "Lettuce", Vector3.new(1.6, 0.5, 1.6), Vector3.new(0, 2.2, 0.9), Color3.fromRGB(90, 220, 90))
 	elseif a == "hat" then
-		makePart(model, "HatBrim", Vector3.new(2.6, 0.3, 2.6), Vector3.new(0, 2.4, 0), Color3.fromRGB(120, 80, 220), Enum.PartType.Cylinder)
-		makePart(model, "HatTop", Vector3.new(1.4, 1.2, 1.4), Vector3.new(0, 3.0, 0), Color3.fromRGB(120, 80, 220), Enum.PartType.Cylinder)
+		local brim = makePart(model, "HatBrim", Vector3.new(0.3, 2.6, 2.6), Vector3.new(0, 2.4, 0), Color3.fromRGB(120, 80, 220), Enum.PartType.Cylinder)
+		brim.CFrame = brim.CFrame * CFrame.Angles(0, 0, math.rad(90))
+		makePart(model, "HatTop", Vector3.new(1.4, 1.3, 1.3), Vector3.new(0, 3.0, 0), Color3.fromRGB(120, 80, 220), Enum.PartType.Cylinder)
 		makePart(model, "Star", Vector3.new(0.5, 0.5, 0.5), Vector3.new(0, 3.8, 0), Color3.fromRGB(255, 240, 100), Enum.PartType.Ball)
 	elseif a == "washer" then
-		local door = makePart(model, "Door", Vector3.new(1.6, 1.6, 0.3), Vector3.new(0, 1.0, 1.3), Color3.fromRGB(140, 200, 255), Enum.PartType.Cylinder)
-		door.CFrame = door.CFrame * CFrame.Angles(math.rad(90), 0, 0)
+		local door = makePart(model, "Door", Vector3.new(0.3, 1.6, 1.6), Vector3.new(0, 1.0, 1.3), Color3.fromRGB(140, 200, 255), Enum.PartType.Cylinder)
+		door.CFrame = door.CFrame * CFrame.Angles(0, math.rad(90), 0)
 		makePart(model, "Knob", Vector3.new(0.4, 0.4, 0.4), Vector3.new(1.0, 1.9, 1.2), Color3.fromRGB(255, 80, 80), Enum.PartType.Ball)
 	elseif a == "spaghetti" then
 		for i = 1, 4 do
-			local noodle = makePart(model, "Noodle" .. i, Vector3.new(0.35, 0.35, 2.4), Vector3.new(-0.7 + i * 0.45, 2.4, 0), Color3.fromRGB(255, 210, 90), Enum.PartType.Cylinder)
+			local noodle = makePart(model, "Noodle" .. i, Vector3.new(2.4, 0.35, 0.35), Vector3.new(-0.7 + i * 0.45, 2.4, 0), Color3.fromRGB(255, 210, 90), Enum.PartType.Cylinder)
 			noodle.CFrame = noodle.CFrame * CFrame.Angles(math.rad(90), math.rad((i - 2) * 22), 0)
 		end
 		makePart(model, "Meatball", Vector3.new(0.9, 0.9, 0.9), Vector3.new(0.8, 2.7, 0.5), Color3.fromRGB(160, 60, 40), Enum.PartType.Ball)
@@ -69,7 +70,8 @@ local function addAccessory(model, entry)
 		for i = 1, 3 do
 			makePart(model, "CrownSpike" .. i, Vector3.new(0.4, 0.9, 0.4), Vector3.new(-0.7 + (i - 1) * 0.7, 2.7, 0), Color3.fromRGB(255, 210, 40))
 		end
-		makePart(model, "CrownBand", Vector3.new(2.0, 0.4, 2.0), Vector3.new(0, 2.3, 0), Color3.fromRGB(255, 210, 40), Enum.PartType.Cylinder)
+		local band = makePart(model, "CrownBand", Vector3.new(0.4, 2.0, 2.0), Vector3.new(0, 2.3, 0), Color3.fromRGB(255, 210, 40), Enum.PartType.Cylinder)
+		band.CFrame = band.CFrame * CFrame.Angles(0, 0, math.rad(90))
 	end
 end
 
@@ -91,12 +93,12 @@ function Factory.buildBrainrotModel(entry, golden)
 	local body = makePart(model, "Body", Vector3.new(3, 2.4, 2.4), Vector3.new(0, 1.2, 0), bodyColor)
 	model.PrimaryPart = body
 	makePart(model, "Head", Vector3.new(2.2, 1.6, 2.2), Vector3.new(0, 3.0, 0), entry.head)
-	local eyeL = makePart(model, "EyeL", Vector3.new(0.5, 0.6, 0.3), Vector3.new(-0.55, 3.1, 1.15), Color3.fromRGB(255, 255, 255), Enum.PartType.Ball)
+	local eyeL = makePart(model, "EyeL", Vector3.new(0.5, 0.5, 0.5), Vector3.new(-0.55, 3.1, 1.15), Color3.fromRGB(255, 255, 255), Enum.PartType.Ball)
 	eyeL.Material = Enum.Material.Neon
-	local eyeR = makePart(model, "EyeR", Vector3.new(0.5, 0.6, 0.3), Vector3.new(0.55, 3.1, 1.15), Color3.fromRGB(255, 255, 255), Enum.PartType.Ball)
+	local eyeR = makePart(model, "EyeR", Vector3.new(0.5, 0.5, 0.5), Vector3.new(0.55, 3.1, 1.15), Color3.fromRGB(255, 255, 255), Enum.PartType.Ball)
 	eyeR.Material = Enum.Material.Neon
-	makePart(model, "PupilL", Vector3.new(0.22, 0.3, 0.15), Vector3.new(-0.55, 3.1, 1.32), Color3.fromRGB(20, 20, 20), Enum.PartType.Ball)
-	makePart(model, "PupilR", Vector3.new(0.22, 0.3, 0.15), Vector3.new(0.55, 3.1, 1.32), Color3.fromRGB(20, 20, 20), Enum.PartType.Ball)
+	makePart(model, "PupilL", Vector3.new(0.25, 0.25, 0.25), Vector3.new(-0.55, 3.1, 1.32), Color3.fromRGB(20, 20, 20), Enum.PartType.Ball)
+	makePart(model, "PupilR", Vector3.new(0.25, 0.25, 0.25), Vector3.new(0.55, 3.1, 1.32), Color3.fromRGB(20, 20, 20), Enum.PartType.Ball)
 	addAccessory(model, entry)
 
 	-- Readable label: name on top, rarity and $/s underneath, in rarity colour.

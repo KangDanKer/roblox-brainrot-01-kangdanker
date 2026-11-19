@@ -15,13 +15,17 @@ for _, name in ipairs({ "UpdateHud", "TsunamiWarning", "TsunamiOver", "ThiefAler
 	event.Parent = remotes
 end
 
-local State = require(script.Parent.State)
-local World = require(script.Parent.World)
-local Economy = require(script.Parent.Economy)
-local Conveyor = require(script.Parent.Conveyor)
-local Steal = require(script.Parent.Steal)
-local Tsunami = require(script.Parent.Tsunami)
-local Rebirth = require(script.Parent.Rebirth)
+-- Rojo turns this init file into the Script itself (named "Server"), with the
+-- other modules as its children — so requires here are script.X, NOT
+-- script.Parent.X (script.Parent is ServerScriptService). The modules keep
+-- script.Parent.X: their parent IS this Script.
+local State = require(script.State)
+local World = require(script.World)
+local Economy = require(script.Economy)
+local Conveyor = require(script.Conveyor)
+local Steal = require(script.Steal)
+local Tsunami = require(script.Tsunami)
+local Rebirth = require(script.Rebirth)
 
 -- The island must exist before any character spawns on it.
 World.buildWorld()

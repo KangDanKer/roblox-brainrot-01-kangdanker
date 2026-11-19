@@ -69,8 +69,9 @@ local function buildPalm(folder, x, z)
 	local trunk = cylinder(folder, "PalmTrunk", 0.7, 12, Vector3.new(x, 6, z), Color3.fromRGB(150, 100, 50))
 	trunk.CFrame = trunk.CFrame * CFrame.Angles(0, 0, math.rad(8))
 	for i = 1, 4 do
-		local leaf = ball(folder, "PalmLeaf", 3.5, Vector3.new(x + math.cos(i * 1.57) * 2.5, 12.5, z + math.sin(i * 1.57) * 2.5), Color3.fromRGB(60, 200, 90))
-		leaf.Size = Vector3.new(5, 1.2, 2)
+		-- Flat slab leaf: a Ball cannot take a non-uniform size (Roblox errors),
+		-- so leaves are boxes, not balls.
+		part(folder, "PalmLeaf", Vector3.new(5, 1.2, 2), Vector3.new(x + math.cos(i * 1.57) * 2.5, 12.5, z + math.sin(i * 1.57) * 2.5), Color3.fromRGB(60, 200, 90))
 	end
 	ball(folder, "Coconut", 1.2, Vector3.new(x + 1, 11.5, z), Color3.fromRGB(120, 80, 40))
 end
